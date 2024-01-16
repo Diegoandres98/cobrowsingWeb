@@ -28,7 +28,7 @@ const Register = () => {
                       <Grid item>
                         <Stack alignItems="center" justifyContent="center" spacing={1}>
                           <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
-                            Crea un nombre de usuario y una contraseña
+                            Crea un nuevo cliente...
                           </Typography>
                         </Stack>
                       </Grid>

@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
@@ -8,8 +6,6 @@ import {
   FormControl,
   FormHelperText,
   Grid,
-  IconButton,
-  InputAdornment,
   InputLabel,
   OutlinedInput,
   TextField,
@@ -24,11 +20,8 @@ import { Formik } from 'formik';
 // project imports
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
-import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
 // assets
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { createCollector } from 'services/collector.services';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
@@ -37,28 +30,6 @@ const FormCreate = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [strength, setStrength] = useState(0);
-  const [level, setLevel] = useState();
-
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const changePassword = (value) => {
-    const temp = strengthIndicator(value);
-    setStrength(temp);
-    setLevel(strengthColor(temp));
-  };
-
-  useEffect(() => {
-    changePassword('123456');
-  }, []);
 
   const handleSendCreateCollector = async (values) => {
     console.log('handleSendCreateCollecto' + JSON.stringify(values));
@@ -78,22 +49,24 @@ const FormCreate = ({ ...others }) => {
       <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12} container alignItems="center" justifyContent="center">
           <Box sx={{ mb: 2 }}>
-            <Typography variant="subtitle1">Estas a punto de registrar un nuevo cobrador</Typography>
+            <Typography variant="subtitle1">Estas a punto de crear un nuevo cliente</Typography>
           </Box>
         </Grid>
       </Grid>
 
       <Formik
         initialValues={{
-          username: '',
-          password: '',
-          fname: '',
+          name: '',
+          document: '',
+          address: '',
+          occupation: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          fname: Yup.string('nombre valido').max(255).required('nombre'),
-          username: Yup.string('Must be a valid username').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
+          name: Yup.string('nombre valido').max(255).required('nombre'),
+          document: Yup.string('Ponga un Documento Valido!!').max(255).required('Documento es requerido'),
+          address: Yup.string('Ponga una direccion!!').max(255).required('Direccion es requerida!'),
+          occupation: Yup.string('Ponga una ocupacion!!').max(255).required('Ocupacion es requerida!')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           handleSendCreateCollector(values);
@@ -120,8 +93,8 @@ const FormCreate = ({ ...others }) => {
                   fullWidth
                   label="Nombre"
                   margin="normal"
-                  value={values.fname}
-                  name="fname"
+                  value={values.name}
+                  name="name"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   type="text"
@@ -133,10 +106,10 @@ const FormCreate = ({ ...others }) => {
               <Grid item xs={12} sm={12}>
                 <TextField
                   fullWidth
-                  label="Nombre"
+                  label="Documento"
                   margin="normal"
-                  value={values.fname}
-                  name="fname"
+                  value={values.document}
+                  name="document"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   type="text"
@@ -145,12 +118,12 @@ const FormCreate = ({ ...others }) => {
               </Grid>
             </Grid>
             <FormControl fullWidth error={Boolean(touched.username && errors.username)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-register">Username</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-email-register">Direccion</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-register"
                 type="text"
-                value={values.username}
-                name="username"
+                value={values.address}
+                name="address"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 inputProps={{}}
@@ -161,58 +134,23 @@ const FormCreate = ({ ...others }) => {
                 </FormHelperText>
               )}
             </FormControl>
-
-            <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-password-register">Contraseña</InputLabel>
+            <FormControl fullWidth error={Boolean(touched.username && errors.username)} sx={{ ...theme.typography.customInput }}>
+              <InputLabel htmlFor="outlined-adornment-email-register">Ocupacion</InputLabel>
               <OutlinedInput
-                id="outlined-adornment-password-register"
-                type={showPassword ? 'text' : 'password'}
-                value={values.password}
-                name="password"
-                label="Password"
+                id="outlined-adornment-email-register"
+                type="text"
+                value={values.occupation}
+                name="occupation"
                 onBlur={handleBlur}
-                onChange={(e) => {
-                  handleChange(e);
-                  changePassword(e.target.value);
-                }}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                      size="large"
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
+                onChange={handleChange}
                 inputProps={{}}
               />
-              {touched.password && errors.password && (
-                <FormHelperText error id="standard-weight-helper-text-password-register">
-                  {errors.password}
+              {touched.username && errors.username && (
+                <FormHelperText error id="standard-weight-helper-text--register">
+                  {errors.username}
                 </FormHelperText>
               )}
             </FormControl>
-
-            {strength !== 0 && (
-              <FormControl fullWidth>
-                <Box sx={{ mb: 2 }}>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item>
-                      <Box style={{ backgroundColor: level?.color }} sx={{ width: 85, height: 8, borderRadius: '7px' }} />
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="subtitle1" fontSize="0.75rem">
-                        {level?.label}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </FormControl>
-            )}
 
             {errors.submit && (
               <Box sx={{ mt: 3 }}>
