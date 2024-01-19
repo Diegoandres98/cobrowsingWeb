@@ -11,7 +11,7 @@ import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // assets
-import { createCollector } from 'services/collector.services';
+import { createClient } from 'services/client.services';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
@@ -19,10 +19,10 @@ const FormCreate = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
 
-  const handleSendCreateCollector = async (values) => {
+  const handleSendCreateClient = async (values) => {
     console.log('handleSendCreateCollecto' + JSON.stringify(values));
-    const { username, fname, password } = values;
-    createCollector({ username, name: fname, password })
+    const { name, document, address, occupation } = values;
+    createClient({ name, document, address, occupation })
       .then((result) => {
         alert('create ' + result);
         console.log('creado ', result);
@@ -57,7 +57,7 @@ const FormCreate = ({ ...others }) => {
           occupation: Yup.string('Ponga una ocupacion!!').max(255).required('Ocupacion es requerida!')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          handleSendCreateCollector(values);
+          handleSendCreateClient(values);
           try {
             if (scriptedRef.current) {
               setStatus({ success: true });

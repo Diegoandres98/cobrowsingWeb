@@ -1,20 +1,21 @@
 import axiosInstance from './axiosInterceptor';
 
-// export const createCollector = async ({ username, password, name }) => {
-//   try {
-//     const res = await axiosInstance.post('/collector', {
-//       username: username,
-//       name: name,
-//       pass: password
-//     });
+export const createClient = async ({ name, document, address, occupation }) => {
+  try {
+    const res = await axiosInstance.post('/client', {
+      name: name,
+      document: document,
+      address: address,
+      occupation: occupation
+    });
 
-//     console.log('res ' + JSON.stringify(res));
-//     return res.data;
-//   } catch (e) {
-//     console.log('errors ' + e);
-//     throw 'Error de inicio de sesión: ' + (e.response?.data || e.message);
-//   }
-// };
+    console.log('res ' + JSON.stringify(res));
+    return res.data;
+  } catch (e) {
+    console.log('errors ' + e);
+    throw 'Error de inicio de sesión: ' + (e.response?.data || e.message);
+  }
+};
 
 export const listClient = async () => {
   try {
