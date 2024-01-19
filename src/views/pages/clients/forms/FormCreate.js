@@ -1,17 +1,6 @@
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import {
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
-  Grid,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
+import { Box, Button, FormControl, FormHelperText, Grid, InputLabel, OutlinedInput, Typography } from '@mui/material';
 
 // third party
 import * as Yup from 'yup';
@@ -29,7 +18,6 @@ import { createCollector } from 'services/collector.services';
 const FormCreate = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleSendCreateCollector = async (values) => {
     console.log('handleSendCreateCollecto' + JSON.stringify(values));
@@ -87,37 +75,43 @@ const FormCreate = ({ ...others }) => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
-            <Grid container spacing={matchDownSM ? 0 : 2}>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  fullWidth
-                  label="Nombre"
-                  margin="normal"
-                  value={values.name}
-                  name="name"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="text"
-                  sx={{ ...theme.typography.customInput }}
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={matchDownSM ? 0 : 2}>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  fullWidth
-                  label="Documento"
-                  margin="normal"
-                  value={values.document}
-                  name="document"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="text"
-                  sx={{ ...theme.typography.customInput }}
-                />
-              </Grid>
-            </Grid>
-            <FormControl fullWidth error={Boolean(touched.username && errors.username)} sx={{ ...theme.typography.customInput }}>
+            <FormControl fullWidth error={Boolean(touched.name && errors.name)} sx={{ ...theme.typography.customInput }}>
+              <InputLabel htmlFor="outlined-adornment-email-register">Nombre</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-email-register"
+                type="text"
+                value={values.name}
+                name="name"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                inputProps={{}}
+              />
+              {touched.name && errors.name && (
+                <FormHelperText error id="standard-weight-helper-text--register">
+                  {errors.name}
+                </FormHelperText>
+              )}
+            </FormControl>
+
+            <FormControl fullWidth error={Boolean(touched.document && errors.document)} sx={{ ...theme.typography.customInput }}>
+              <InputLabel htmlFor="outlined-adornment-email-register">Documento</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-email-register"
+                type="text"
+                value={values.document}
+                name="document"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                inputProps={{}}
+              />
+              {touched.document && errors.document && (
+                <FormHelperText error id="standard-weight-helper-text--register">
+                  {errors.document}
+                </FormHelperText>
+              )}
+            </FormControl>
+
+            <FormControl fullWidth error={Boolean(touched.address && errors.address)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-email-register">Direccion</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-register"
@@ -128,13 +122,13 @@ const FormCreate = ({ ...others }) => {
                 onChange={handleChange}
                 inputProps={{}}
               />
-              {touched.username && errors.username && (
+              {touched.address && errors.address && (
                 <FormHelperText error id="standard-weight-helper-text--register">
-                  {errors.username}
+                  {errors.address}
                 </FormHelperText>
               )}
             </FormControl>
-            <FormControl fullWidth error={Boolean(touched.username && errors.username)} sx={{ ...theme.typography.customInput }}>
+            <FormControl fullWidth error={Boolean(touched.occupation && errors.occupation)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-email-register">Ocupacion</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-register"
@@ -145,9 +139,9 @@ const FormCreate = ({ ...others }) => {
                 onChange={handleChange}
                 inputProps={{}}
               />
-              {touched.username && errors.username && (
+              {touched.occupation && errors.occupation && (
                 <FormHelperText error id="standard-weight-helper-text--register">
-                  {errors.username}
+                  {errors.occupation}
                 </FormHelperText>
               )}
             </FormControl>
