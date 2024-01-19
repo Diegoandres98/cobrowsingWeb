@@ -12,9 +12,7 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  TextField,
-  Typography,
-  useMediaQuery
+  Typography
 } from '@mui/material';
 
 // third party
@@ -36,7 +34,6 @@ import { createCollector } from 'services/collector.services';
 const FirebaseRegister = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const [showPassword, setShowPassword] = useState(false);
 
   const [strength, setStrength] = useState(0);
@@ -72,7 +69,6 @@ const FirebaseRegister = ({ ...others }) => {
         console.error('Error en el inicio de sesión: ', error);
       });
   };
-
 
   return (
     <>
@@ -115,21 +111,24 @@ const FirebaseRegister = ({ ...others }) => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
-            <Grid container spacing={matchDownSM ? 0 : 2}>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  fullWidth
-                  label="Nombre"
-                  margin="normal"
-                  value={values.fname}
-                  name="fname"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="text"
-                  sx={{ ...theme.typography.customInput }}
-                />
-              </Grid>
-            </Grid>
+            <FormControl fullWidth error={Boolean(touched.fname && errors.fname)} sx={{ ...theme.typography.customInput }}>
+              <InputLabel htmlFor="outlined-adornment-email-register">Nombre</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-email-register"
+                type="text"
+                value={values.fname}
+                name="fname"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                inputProps={{}}
+              />
+              {touched.fname && errors.fname && (
+                <FormHelperText error id="standard-weight-helper-text--register">
+                  {errors.fname}
+                </FormHelperText>
+              )}
+            </FormControl>
+
             <FormControl fullWidth error={Boolean(touched.username && errors.username)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-email-register">Username</InputLabel>
               <OutlinedInput
