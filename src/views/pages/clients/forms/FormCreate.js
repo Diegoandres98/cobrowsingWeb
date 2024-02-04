@@ -19,15 +19,17 @@ const FormCreate = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
 
-  const handleSendCreateClient = async (values) => {
+  const handleSendCreateClient = async (values, { resetForm }) => {
     console.log('handleSendCreateCollecto' + JSON.stringify(values));
     const { name, document, address, occupation } = values;
     createClient({ name, document, address, occupation })
       .then((result) => {
-        alert('create ' + result);
+        alert('Cliente creado con exito');
+        resetForm();
         console.log('creado ', result);
       })
       .catch((error) => {
+        alert('Los datos ingresados no son validos por favor revise');
         console.error('Error en el inicio de sesión: ', error);
       });
   };
@@ -56,8 +58,8 @@ const FormCreate = ({ ...others }) => {
           address: Yup.string('Ponga una direccion!!').max(255).required('Direccion es requerida!'),
           occupation: Yup.string('Ponga una ocupacion!!').max(255).required('Ocupacion es requerida!')
         })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          handleSendCreateClient(values);
+        onSubmit={async (values, { resetForm, setErrors, setStatus, setSubmitting }) => {
+          handleSendCreateClient(values, { resetForm });
           try {
             if (scriptedRef.current) {
               setStatus({ success: true });

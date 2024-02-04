@@ -10,6 +10,8 @@ import { useEffect } from 'react';
 import { listClient, putClientStatusInactive } from 'services/client.services';
 import { useState } from 'react';
 import AlertDialogSlide from '../../components/AlertBorrar';
+import FormDialog from '../../components/DialogEdit';
+import AuthEdit from '../authentication/auth-forms/AuthEdit';
 
 // import AuthRegister from '../authentication/auth-forms/AuthRegister';
 // import AuthFooter from 'ui-component/cards/AuthFooter';
@@ -39,7 +41,7 @@ const columns = [
 
 // ===============================|| AUTH3 - REGISTER ||=============================== //
 
-const ListCollector = () => {
+const ListClient = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const [clients, setClients] = useState({});
@@ -119,7 +121,7 @@ const ListCollector = () => {
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    {clients.length > 0 && <TableCollector columns={columns} rows={clients} callback={openModalFunc} />}
+                    {clients.length > 0 && <TableClient columns={columns} rows={clients} callback={openModalFunc} />}
                   </Grid>
                   <Grid item xs={12}>
                     <Divider />
@@ -134,8 +136,11 @@ const ListCollector = () => {
         </Grid>
       </Grid>
       <AlertDialogSlide openModal={openModal} setOpenModal={setOpenModal} handleAcept={handleAcept} />
+      <FormDialog open={openDialog} setOpen={setOpenDialog} handleSendData>
+        <AuthEdit row={openDialog.row} />
+      </FormDialog>
     </AuthWrapper1>
   );
 };
 
-export default ListCollector;
+export default ListClient;
