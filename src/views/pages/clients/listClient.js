@@ -5,13 +5,13 @@ import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 // project imports
 import AuthWrapper1 from '../authentication/AuthWrapper1';
 import ListCardTableWrapper from '../collector/ListCardTableWrapper';
-import TableCollector from '../../components/table';
+import TableClient from '../../components/table';
 import { useEffect } from 'react';
 import { listClient, putClientStatusInactive } from 'services/client.services';
 import { useState } from 'react';
 import AlertDialogSlide from '../../components/AlertBorrar';
 import FormDialog from '../../components/DialogEdit';
-import AuthEdit from '../authentication/auth-forms/AuthEdit';
+import FormUpdateClient from '../clients/forms/FormUpdateClient';
 
 // import AuthRegister from '../authentication/auth-forms/AuthRegister';
 // import AuthFooter from 'ui-component/cards/AuthFooter';
@@ -137,7 +137,7 @@ const ListClient = () => {
       </Grid>
       <AlertDialogSlide openModal={openModal} setOpenModal={setOpenModal} handleAcept={handleAcept} />
       <FormDialog open={openDialog} setOpen={setOpenDialog} handleSendData>
-        <AuthEdit row={openDialog.row} />
+        <FormUpdateClient row={openDialog.row} />
       </FormDialog>
     </AuthWrapper1>
   );
