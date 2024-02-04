@@ -57,15 +57,17 @@ const FirebaseRegister = ({ ...others }) => {
     changePassword('123456');
   }, []);
 
-  const handleSendCreateCollector = async (values) => {
+  const handleSendCreateCollector = async (values, { resetForm }) => {
     console.log('handleSendCreateCollecto' + JSON.stringify(values));
     const { username, fname, password } = values;
     createCollector({ username, name: fname, password })
       .then((result) => {
-        alert('create ' + result);
+        alert('Cobrador creado con exito');
         console.log('creado ', result);
+        resetForm();
       })
       .catch((error) => {
+        alert('Los datos ingresados no son validos por favor revise');
         console.error('Error en el inicio de sesión: ', error);
       });
   };
@@ -92,8 +94,8 @@ const FirebaseRegister = ({ ...others }) => {
           username: Yup.string('Must be a valid username').max(255).required('Email is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          handleSendCreateCollector(values);
+        onSubmit={async (values, { resetForm, setErrors, setStatus, setSubmitting }) => {
+          handleSendCreateCollector(values, { resetForm });
           try {
             if (scriptedRef.current) {
               setStatus({ success: true });
