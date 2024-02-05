@@ -11,26 +11,27 @@ import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // assets
-import { createClient } from 'services/client.services';
+import { putClient } from 'services/client.services';
+import { messageExit, messageFail } from 'utils/sweetAlert';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
-const FormCreate = ({ ...others }) => {
+const FormUpdateClient = ({ row }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
 
-  const handleSendCreateClient = async (values, { resetForm }) => {
-    console.log('handleSendCreateCollecto' + JSON.stringify(values));
+  const handleSendPutClient = async (values) => {
+    console.log('handleSendPutClient' + JSON.stringify(values));
     const { name, document, address, occupation } = values;
-    createClient({ name, document, address, occupation })
+    putClient({ id: row.id, name, document, address, occupation })
       .then((result) => {
-        alert('Cliente creado con exito');
-        resetForm();
+        messageExit();
+        //location.reload();
         console.log('creado ', result);
       })
       .catch((error) => {
-        alert('Los datos ingresados no son validos por favor revise');
-        console.error('Error en el inicio de sesión: ', error);
+        messageFail();
+        console.error('Error en el inicio de sesión: ', error.message);
       });
   };
 
@@ -39,17 +40,17 @@ const FormCreate = ({ ...others }) => {
       <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12} container alignItems="center" justifyContent="center">
           <Box sx={{ mb: 2 }}>
-            <Typography variant="subtitle1">Estas a punto de crear un nuevo cliente</Typography>
+            <Typography variant="subtitle1">Estas a punto de editar el registro de un cliente existente</Typography>
           </Box>
         </Grid>
       </Grid>
 
       <Formik
         initialValues={{
-          name: '',
-          document: '',
-          address: '',
-          occupation: '',
+          name: row.name,
+          document: row.document,
+          address: row.address,
+          occupation: row.occupation,
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -58,8 +59,8 @@ const FormCreate = ({ ...others }) => {
           address: Yup.string('Ponga una direccion!!').max(255).required('Direccion es requerida!'),
           occupation: Yup.string('Ponga una ocupacion!!').max(255).required('Ocupacion es requerida!')
         })}
-        onSubmit={async (values, { resetForm, setErrors, setStatus, setSubmitting }) => {
-          handleSendCreateClient(values, { resetForm });
+        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+          handleSendPutClient(values);
           try {
             if (scriptedRef.current) {
               setStatus({ success: true });
@@ -76,7 +77,7 @@ const FormCreate = ({ ...others }) => {
         }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit} {...others}>
+          <form noValidate onSubmit={handleSubmit}>
             <FormControl fullWidth error={Boolean(touched.name && errors.name)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-email-register">Nombre</InputLabel>
               <OutlinedInput
@@ -157,7 +158,7 @@ const FormCreate = ({ ...others }) => {
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
-                  Crear!!
+                  Editar!!
                 </Button>
               </AnimateButton>
             </Box>
@@ -168,4 +169,4 @@ const FormCreate = ({ ...others }) => {
   );
 };
 
-export default FormCreate;
+export default FormUpdateClient;

@@ -12,6 +12,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // assets
 import { createClient } from 'services/client.services';
+import { messageExit, messageFail } from 'utils/sweetAlert';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
@@ -24,12 +25,13 @@ const FormCreate = ({ ...others }) => {
     const { name, document, address, occupation } = values;
     createClient({ name, document, address, occupation })
       .then((result) => {
-        alert('Cliente creado con exito');
+        messageExit();
+        //alert('Cliente creado con exito');
         resetForm();
         console.log('creado ', result);
       })
       .catch((error) => {
-        alert('Los datos ingresados no son validos por favor revise');
+        messageFail();
         console.error('Error en el inicio de sesión: ', error);
       });
   };

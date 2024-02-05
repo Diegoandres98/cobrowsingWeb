@@ -42,3 +42,20 @@ export const putClientStatusInactive = async ({ id, status }) => {
     throw 'Error de inicio de sesión: ' + (e.response?.data || e.message);
   }
 };
+
+export const putClient = async ({ id, name, document, address, occupation }) => {
+  try {
+    const res = await axiosInstance.put('/client/' + id, {
+      name,
+      document,
+      address,
+      occupation
+    });
+
+    console.log('res ' + JSON.stringify(res));
+    return res.data;
+  } catch (e) {
+    console.log('errors ' + e);
+    throw 'Error de inicio de sesión: ' + (e.response?.data || e.message);
+  }
+};

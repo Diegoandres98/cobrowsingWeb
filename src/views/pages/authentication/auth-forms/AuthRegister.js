@@ -28,6 +28,7 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { createCollector } from 'services/collector.services';
+import { messageExit, messageFail } from 'utils/sweetAlert';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
@@ -62,12 +63,14 @@ const FirebaseRegister = ({ ...others }) => {
     const { username, fname, password } = values;
     createCollector({ username, name: fname, password })
       .then((result) => {
-        alert('Cobrador creado con exito');
+       // alert('Cobrador creado con exito');
+        messageExit();
         console.log('creado ', result);
         resetForm();
       })
       .catch((error) => {
-        alert('Los datos ingresados no son validos por favor revise');
+        messageFail();
+      //  alert('Los datos ingresados no son validos por favor revise');
         console.error('Error en el inicio de sesión: ', error);
       });
   };
