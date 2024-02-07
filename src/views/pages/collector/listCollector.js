@@ -64,11 +64,23 @@ const columns = [
 const ListCollector = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+
+  const [itemList, setItemList] = useState({
+    page: 1,
+    itemsForPage: 10
+  });
+
   const [collector, setCollector] = useState({});
   const [openModal, setOpenModal] = useState({
     status: false,
     itemSelected: null,
     statusItemSelected: null
+  });
+  const [itemForPage, setItemForPage] = useState({
+    itemsForPage: 10,
+    page: 1,
+    total: 0,
+    totalPages: 0
   });
 
   const [openDialog, setOpenDialog] = useState({
@@ -78,11 +90,23 @@ const ListCollector = () => {
   });
 
   useEffect(() => {
-    listCollector().then((r) => {
-      console.log(r);
+    listCollector(itemList.page, itemList.itemsForPage).then((r) => {
+      setItemForPage({
+        itemsForPage: r.itemsForPage,
+        page: r.page,
+        total: r.total,
+        totalPages: r.totalPages
+      });
       setCollector(r.collectorss);
     });
-  }, []);
+  }, [itemList]);
+
+  const controllerPagination = (page) => {
+    setItemList({
+      ...itemList,
+      page: page + 1
+    });
+  };
 
   const openModalFunc = (type, row) => {
     console.log('id press' + JSON.stringify(row));
@@ -141,7 +165,15 @@ const ListCollector = () => {
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    {collector.length > 0 && <TableCollector columns={columns} rows={collector} callback={openModalFunc} />}
+                    {collector.length > 0 && (
+                      <TableCollector
+                        columns={columns}
+                        rows={collector}
+                        itemForPage={itemForPage}
+                        callback={openModalFunc}
+                        controllerPagination={controllerPagination}
+                      />
+                    )}
                   </Grid>
                   <Grid item xs={12}>
                     <Divider />
