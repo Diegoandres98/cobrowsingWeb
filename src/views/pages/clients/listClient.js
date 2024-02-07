@@ -137,7 +137,7 @@ const ListClient = () => {
       </Grid>
       <AlertDialogSlide openModal={openModal} setOpenModal={setOpenModal} handleAcept={handleAcept} />
       <FormDialog open={openDialog} setOpen={setOpenDialog} handleSendData>
-        <FormUpdateClient row={openDialog.row} />
+        <FormUpdateClient row={openDialog.row} open={openDialog} setOpen={setOpenDialog} />
       </FormDialog>
     </AuthWrapper1>
   );

@@ -16,7 +16,7 @@ import { messageExit, messageFail } from 'utils/sweetAlert';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
-const FormUpdateClient = ({ row }) => {
+const FormUpdateClient = ({ row, open, setOpen }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
 
@@ -32,6 +32,12 @@ const FormUpdateClient = ({ row }) => {
       .catch((error) => {
         messageFail();
         console.error('Error en el inicio de sesión: ', error.message);
+      })
+      .finally(() => {
+        setOpen({
+          ...open,
+          status: false
+        });
       });
   };
 
