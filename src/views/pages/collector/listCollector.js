@@ -157,7 +157,7 @@ const ListCollector = () => {
       </Grid>
       <AlertDialogSlide openModal={openModal} setOpenModal={setOpenModal} handleAcept={handleAcept} />
       <FormDialog open={openDialog} setOpen={setOpenDialog} handleSendData>
-        <AuthEdit row={openDialog.row} />
+        <AuthEdit row={openDialog.row} open={openDialog} setOpen={setOpenDialog} />
       </FormDialog>
     </AuthWrapper1>
   );
