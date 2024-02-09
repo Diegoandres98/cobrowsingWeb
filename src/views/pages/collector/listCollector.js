@@ -70,7 +70,7 @@ const ListCollector = () => {
     itemsForPage: 10
   });
 
-  const [collector, setCollector] = useState({});
+  const [collector, setCollector] = useState([]);
   const [openModal, setOpenModal] = useState({
     status: false,
     itemSelected: null,
@@ -90,20 +90,37 @@ const ListCollector = () => {
   });
 
   useEffect(() => {
+    console.log('vuelvo a cargar jjiji');
     listCollector(itemList.page, itemList.itemsForPage).then((r) => {
+      const valAnteriorItemsForPage = itemForPage.itemsForPage;
       setItemForPage({
         itemsForPage: r.itemsForPage,
         page: r.page,
         total: r.total,
         totalPages: r.totalPages
       });
-      setCollector(r.collectorss);
+      //add nuevo consumo, a la tabla
+      if (valAnteriorItemsForPage !== r.itemsForPage) {
+        setCollector(r.collectorss);
+        return;
+      }
+      const rS = collector.concat(r.collectorss);
+      setCollector(rS);
     });
   }, [itemList]);
 
-  const controllerPagination = (page) => {
+  const controllerPagination = ({ page, rowsPerPage }) => {
+    if (itemForPage.itemsForPage !== rowsPerPage) {
+      setItemList({
+        itemsForPage: rowsPerPage,
+        page: 1
+      });
+    }
+    if (itemList.page > page) {
+      return;
+    }
     setItemList({
-      ...itemList,
+      itemsForPage: rowsPerPage,
       page: page + 1
     });
   };

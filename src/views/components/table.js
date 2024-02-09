@@ -17,14 +17,13 @@ export default function ColumnGroupingTable({ columns, rows, callback, itemForPa
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    controllerPagination(newPage);
-    console.log('newPage ' + newPage);
+    controllerPagination({ page: newPage, rowsPerPage });
   };
 
   const handleChangeRowsPerPage = (event) => {
-    console.log('press handleChangeRowsPerPage ');
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+    const tempRowsPerPage = +event.target.value;
+    setRowsPerPage(tempRowsPerPage);
+    controllerPagination({ page, rowsPerPage: tempRowsPerPage });
   };
 
   React.useEffect(() => {
