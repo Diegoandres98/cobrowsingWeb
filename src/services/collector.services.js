@@ -16,9 +16,9 @@ export const createCollector = async ({ username, password, name }) => {
   }
 };
 
-export const listCollector = async () => {
+export const listCollector = async (page = 1, itemsForPage = 10) => {
   try {
-    const res = await axiosInstance.get('/collector');
+    const res = await axiosInstance.get(`/collector?pagina=${page}&itemsForPage=${itemsForPage}`);
 
     console.log('res ' + JSON.stringify(res));
     return res.data;
