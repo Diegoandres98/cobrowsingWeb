@@ -17,9 +17,9 @@ export const createClient = async ({ name, document, address, occupation }) => {
   }
 };
 
-export const listClient = async () => {
+export const listClient = async (page = 1, itemsForPage = 10) => {
   try {
-    const res = await axiosInstance.get('/client');
+   const res = await axiosInstance.get(`/client?pagina=${page}&itemsForPage=${itemsForPage}`);
 
     console.log('res ' + JSON.stringify(res));
     return res.data;

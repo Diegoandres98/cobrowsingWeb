@@ -19,8 +19,9 @@ export default function ColumnGroupingTable({ columns, rows, callback }) {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+    const tempRowsPerPage = +event.target.value;
+    setRowsPerPage(tempRowsPerPage);
+    controllerPagination({ page, rowsPerPage: tempRowsPerPage }); 
   };
 
   return (
