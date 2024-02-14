@@ -34,6 +34,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Login } from 'services/login.services';
 import { useLocalStorage } from 'hooks/useLocalStorage';
 import { useNavigate } from 'react-router';
+import { messageFail } from 'utils/sweetAlert';
 
 const LoginScreen = ({ ...others }) => {
   const theme = useTheme();
@@ -63,6 +64,7 @@ const LoginScreen = ({ ...others }) => {
       })
       .catch((error) => {
         console.error('Error en el inicio de sesión: ', error);
+        messageFail();
       });
   };
 
