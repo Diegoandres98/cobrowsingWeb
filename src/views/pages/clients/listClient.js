@@ -44,11 +44,23 @@ const columns = [
 const ListClient = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  const [clients, setClients] = useState({});
+  const [itemList, setItemList] = useState({
+    page: 1,
+    itemsForPage: 10
+  });
+
+  const [clients, setClients] = useState([]);
   const [openModal, setOpenModal] = useState({
     status: false,
     itemSelected: null,
     statusItemSelected: null
+  });
+
+  const [itemForPage, setItemForPage] = useState({
+    itemsForPage: 10,
+    page: 1,
+    total: 0,
+    totalPages: 0
   });
 
   const [openDialog, setOpenDialog] = useState({
@@ -58,11 +70,39 @@ const ListClient = () => {
   });
 
   useEffect(() => {
-    listClient().then((r) => {
-      console.log(r);
-      setClients(r.clientss);
+    listClient(itemList.page, itemList.itemsForPage).then((r) => {
+      const valAnteriorItemsForPage = itemForPage.itemsForPage;
+      setItemForPage({
+        itemsForPage: r.itemsForPage,
+        page: r.page,
+        total: r.total,
+        totalPages: r.totalPages
+      });
+      //add nuevo consumo, a la tabla
+      if (valAnteriorItemsForPage !== r.itemsForPage) {
+        setClients(r.clientss);
+        return;
+      }
+      const rS = clients.concat(r.clientss);
+      setClients(rS);
     });
-  }, []);
+  }, [itemList]);
+
+  const controllerPagination = ({ page, rowsPerPage }) => {
+    if (itemForPage.itemsForPage !== rowsPerPage) {
+      setItemList({
+        itemsForPage: rowsPerPage,
+        page: 1
+      });
+    }
+    if (itemList.page > page) {
+      return;
+    }
+    setItemList({
+      itemsForPage: rowsPerPage,
+      page: page + 1
+    });
+  };
 
   const openModalFunc = (type, row) => {
     console.log('id press' + JSON.stringify(row));
@@ -121,7 +161,15 @@ const ListClient = () => {
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    {clients.length > 0 && <TableClient columns={columns} rows={clients} callback={openModalFunc} />}
+                    {clients.length > 0 && (
+                      <TableClient
+                        columns={columns}
+                        rows={clients}
+                        itemForPage={itemForPage}
+                        callback={openModalFunc}
+                        controllerPagination={controllerPagination}
+                      />
+                    )}
                   </Grid>
                   <Grid item xs={12}>
                     <Divider />
