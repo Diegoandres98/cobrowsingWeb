@@ -12,7 +12,7 @@ import AlertDialogSlide from '../../components/AlertBorrar';
 import FormDialog from '../../components/DetailsCredit';
 import FormUpdateCredit from '../reports/DetailsCr';
 import { listCredit } from 'services/credits.service'; 
-
+import { listCollector } from 'services/collector.services'
 // import AuthRegister from '../authentication/auth-forms/AuthRegister';
 // import AuthFooter from 'ui-component/cards/AuthFooter';
 
@@ -43,29 +43,10 @@ const columns = [
   }
 ];
 
-/*const listColector = [
-  {
-    value: 'seleccione',
-    label: 'Seleccione'
-  },
-  {
-    value: 'today',
-    label: 'Today'
-  },
-  {
-    value: 'month',
-    label: 'This Month'
-  },
-  {
-    value: 'year',
-    label: 'This Year'
-  }
-];*/
-
 // ===============================|| AUTH3 - REGISTER ||=============================== //
 
 const ListCredit = () => {
-  const [value, setValue] = useState(6);
+  const [value, setValue] = useState(null);
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const [itemList, setItemList] = useState({
@@ -73,6 +54,7 @@ const ListCredit = () => {
     itemsForPage: 10
   });
 
+  const [ collector, setCollector] = useState([])
   const [credit, setCredit] = useState([]);
   const [openModal, setOpenModal] = useState({
     status: false,
@@ -94,24 +76,42 @@ const ListCredit = () => {
   });
 
   useEffect(() => {
-    listCredit(itemList.page, itemList.itemsForPage, 9).then((r) => {
-      const valAnteriorItemsForPage = itemForPage.itemsForPage;
 
-      setItemForPage({
-        itemsForPage: r.itemsForPage,
-        page: r.page,
-        total: r.total,
-        totalPages: r.totalPages
-      });
-      //add nuevo consumo, a la tabla
-      if (valAnteriorItemsForPage !== r.itemsForPage) {
-        setCredit(r.creditssDto);
-        return;
-      }
-      const rS = credit.concat(r.creditssDto);
-      setCredit(rS);
+    listCollector(1, 10000).then((r) => {
+      setCollector(r.collectorss);
+      setValue(r.collectorss[0].id)
     });
+
+    if (value !== null) {
+      listCredit(itemList.page, itemList.itemsForPage, value).then((r) => {
+        const valAnteriorItemsForPage = itemForPage.itemsForPage;
+  
+        setItemForPage({
+          itemsForPage: r.itemsForPage,
+          page: r.page,
+          total: r.total,
+          totalPages: r.totalPages
+        });
+        //add nuevo consumo, a la tabla
+        if (valAnteriorItemsForPage !== r.itemsForPage) {
+          setCredit(r.creditssDto);
+          return;
+        }
+        const rS = credit.concat(r.creditssDto);
+        setCredit(rS);
+      });
+    }
+
   }, [itemList]);
+
+  useEffect(()=>{
+    if (value !== null) {
+      listCredit(undefined, undefined,value).then((r) => {
+        setCredit(r.creditssDto);
+      });
+    }
+
+  },[value])
 
   const controllerPagination = ({ page, rowsPerPage }) => {
     if (itemForPage.itemsForPage !== rowsPerPage) {
@@ -182,13 +182,17 @@ const ListCredit = () => {
                         <Stack alignItems="center" justifyContent="center" spacing={1}>
                           <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
                             <Grid item>
-                              <TextField id="standard-select-currency" select value={value} onChange={(e) => setValue(e.target.value)}>
-                                {credit.map((option) => (
-                                  <MenuItem key={option.collector_username} value={option.id}>
-                                    {option.collector_username}
-                                  </MenuItem>
-                                ))}
-                              </TextField>
+                              {
+                                collector.length > 0 &&
+                                  <TextField id="standard-select-currency" select value={value === null ? collector[0].id : value } onChange={(e) => setValue(e.target.value)}>
+                                  {collector.map((option) => (
+                                    <MenuItem key={option.id} value={option.id}>
+                                      {option.username}
+                                    </MenuItem>
+                                  ))}
+
+                                </TextField>
+                              }
                             </Grid>
                             Creditos collector
                           </Typography>
