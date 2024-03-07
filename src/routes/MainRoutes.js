@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
+import ListCredit from 'views/pages/reports/credit';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -62,6 +63,23 @@ const MainRoutes = {
         {
           path: 'list',
           element: <ListClient />
+        }
+      ]
+    },
+    {
+      path: 'reports',
+      children: [
+        {
+          path: 'Gastos',
+          element: <CreateClient />
+        },
+        {
+          path: 'credit',
+          element: <ListCredit />
+        },
+        {
+          path: 'abonos',
+          element: <ListCredit />
         }
       ]
     },

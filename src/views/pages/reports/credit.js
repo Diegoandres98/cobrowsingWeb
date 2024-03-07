@@ -1,26 +1,32 @@
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Divider, Grid, TextField, MenuItem, Stack, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
 import AuthWrapper1 from '../authentication/AuthWrapper1';
 import ListCardTableWrapper from '../collector/ListCardTableWrapper';
-import TableCollector from '../../components/table';
+import TableCredit from '../../components/table';
 import { useEffect } from 'react';
-import { listCollector, putCollectorStatusInactive } from 'services/collector.services';
 import { useState } from 'react';
 import AlertDialogSlide from '../../components/AlertBorrar';
-import FormDialog from '../../components/DialogEdit';
-import AuthEdit from '../authentication/auth-forms/AuthEdit';
+import FormDialog from '../../components/DetailsCredit';
+import FormUpdateCredit from '../reports/DetailsCr';
+import { listCredit } from 'services/credits.service'; 
 
 // import AuthRegister from '../authentication/auth-forms/AuthRegister';
 // import AuthFooter from 'ui-component/cards/AuthFooter';
 
 // assets
+
 const columns = [
   { id: 'id', label: '#', minWidth: 20 },
-  { id: 'name', label: 'Nombre', minWidth: 170 },
-  { id: 'username', label: 'Username', minWidth: 100 },
+  { id: 'client_name', label: 'Nombre', minWidth: 170 },
+  { id: 'collectionAddress', label: 'Direccion', minWidth: 100 },
+  { id: 'borrowedValue', label: 'Monto inicial', minWidth: 100 },
+  { id: 'creditDays', label: 'Cuotas Pagas', minWidth: 170 },
+  { id: 'creditFinishDate', label: 'Fecha Finalizacion Credito', minWidth: 100 },
+  { id: 'paymentInstallments', label: 'Cuotas Atrazadas', minWidth: 100 },
+
   {
     id: 'status',
     label: 'Estado',
@@ -30,52 +36,50 @@ const columns = [
   },
   {
     id: 'actions',
-    label: 'Operaciones',
+    label: 'Detalles',
     minWidth: 170,
     align: 'center',
     format: (value) => value.toFixed(2)
   }
 ];
 
-// function createData(name, code, population, size) {
-//   const sidze = population / size;
-//   return { name, code, population, status: population, actions: sidze };
-// }
+/*const listColector = [
+  {
+    value: 'seleccione',
+    label: 'Seleccione'
+  },
+  {
+    value: 'today',
+    label: 'Today'
+  },
+  {
+    value: 'month',
+    label: 'This Month'
+  },
+  {
+    value: 'year',
+    label: 'This Year'
+  }
+];*/
 
-// const rows = [
-//   createData('India', 'IN', 1324171354, 3287263),
-//   createData('China', 'CN', 1403500365, 9596961),
-//   createData('Italy', 'IT', 60483973, 301340),
-//   createData('United States', 'US', 327167434, 9833520),
-//   createData('Canada', 'CA', 37602103, 9984670),
-//   createData('Australia', 'AU', 25475400, 7692024),
-//   createData('Germany', 'DE', 83019200, 357578),
-//   createData('Ireland', 'IE', 4857000, 70273),
-//   createData('Mexico', 'MX', 126577691, 1972550),
-//   createData('Japan', 'JP', 126317000, 377973),
-//   createData('France', 'FR', 67022000, 640679),
-//   createData('United Kingdom', 'GB', 67545757, 242495),
-//   createData('Russia', 'RU', 146793744, 17098246),
-//   createData('Nigeria', 'NG', 200962417, 923768),
-//   createData('Brazil', 'BR', 210147125, 8515767)
-// ];
 // ===============================|| AUTH3 - REGISTER ||=============================== //
 
-const ListCollector = () => {
+const ListCredit = () => {
+  const [value, setValue] = useState(6);
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-
   const [itemList, setItemList] = useState({
     page: 1,
     itemsForPage: 10
   });
 
-  const [collector, setCollector] = useState([]);
+  const [credit, setCredit] = useState([]);
   const [openModal, setOpenModal] = useState({
     status: false,
     itemSelected: null,
     statusItemSelected: null
   });
+
   const [itemForPage, setItemForPage] = useState({
     itemsForPage: 10,
     page: 1,
@@ -90,8 +94,9 @@ const ListCollector = () => {
   });
 
   useEffect(() => {
-    listCollector(itemList.page, itemList.itemsForPage).then((r) => {
+    listCredit(itemList.page, itemList.itemsForPage, 9).then((r) => {
       const valAnteriorItemsForPage = itemForPage.itemsForPage;
+
       setItemForPage({
         itemsForPage: r.itemsForPage,
         page: r.page,
@@ -100,11 +105,11 @@ const ListCollector = () => {
       });
       //add nuevo consumo, a la tabla
       if (valAnteriorItemsForPage !== r.itemsForPage) {
-        setCollector(r.collectorss);
+        setCredit(r.creditssDto);
         return;
       }
-      const rS = collector.concat(r.collectorss);
-      setCollector(rS);
+      const rS = credit.concat(r.creditssDto);
+      setCredit(rS);
     });
   }, [itemList]);
 
@@ -123,6 +128,13 @@ const ListCollector = () => {
       page: page + 1
     });
   };
+
+ /* useEffect(() => {
+    listCollector(1, 10000).then((r) => {
+      setCollector(r.collectorss);
+      console.log('-----------'+ r.collector);
+    });
+  }, [itemList]);*/
 
   const openModalFunc = (type, row) => {
     console.log('id press' + JSON.stringify(row));
@@ -154,11 +166,6 @@ const ListCollector = () => {
     if (openModal.itemSelected === null) {
       return;
     }
-
-    putCollectorStatusInactive({ id: openModal.itemSelected, status: openModal.statusItemSelected }).then(() => {
-      window.location.reload();
-    });
-    // openModal.id;
   };
 
   return (
@@ -174,17 +181,26 @@ const ListCollector = () => {
                       <Grid item>
                         <Stack alignItems="center" justifyContent="center" spacing={1}>
                           <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
-                            Listado de cobradores
+                            <Grid item>
+                              <TextField id="standard-select-currency" select value={value} onChange={(e) => setValue(e.target.value)}>
+                                {credit.map((option) => (
+                                  <MenuItem key={option.collector_username} value={option.id}>
+                                    {option.collector_username}
+                                  </MenuItem>
+                                ))}
+                              </TextField>
+                            </Grid>
+                            Creditos collector
                           </Typography>
                         </Stack>
                       </Grid>
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    {collector.length > 0 && (
-                      <TableCollector
+                    {credit.length > 0 && (
+                      <TableCredit
                         columns={columns}
-                        rows={collector}
+                        rows={credit}
                         itemForPage={itemForPage}
                         callback={openModalFunc}
                         controllerPagination={controllerPagination}
@@ -205,10 +221,10 @@ const ListCollector = () => {
       </Grid>
       <AlertDialogSlide openModal={openModal} setOpenModal={setOpenModal} handleAcept={handleAcept} />
       <FormDialog open={openDialog} setOpen={setOpenDialog} handleSendData>
-        <AuthEdit row={openDialog.row} open={openDialog} setOpen={setOpenDialog} />
+        <FormUpdateCredit row={openDialog.row} open={openDialog} setOpen={setOpenDialog} />
       </FormDialog>
     </AuthWrapper1>
   );
 };
 
-export default ListCollector;
+export default ListCredit;
