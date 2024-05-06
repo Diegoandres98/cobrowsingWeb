@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { PathApi } from '../../src/config/config';
 
 export const Login = async ({ username, password }) => {
   try {
-    const res = await axios.post('http://localhost:3000/login-ad', {
+    const res = await axios.post(`${PathApi}/login-ad`, {
       username: username,
       pass: password
     });

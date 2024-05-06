@@ -34,6 +34,7 @@ import { messageExit, messageFail } from 'utils/sweetAlert';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
+// eslint-disable-next-line react/prop-types
 const FirebaseRegister = ({ row, open, setOpen }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
@@ -93,8 +94,10 @@ const FirebaseRegister = ({ row, open, setOpen }) => {
 
       <Formik
         initialValues={{
+          // eslint-disable-next-line react/prop-types
           username: row.username,
           password: '',
+          // eslint-disable-next-line react/prop-types
           fname: row.name,
           submit: null
         }}

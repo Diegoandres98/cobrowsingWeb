@@ -63,14 +63,14 @@ const FirebaseRegister = ({ ...others }) => {
     const { username, fname, password } = values;
     createCollector({ username, name: fname, password })
       .then((result) => {
-       // alert('Cobrador creado con exito');
+        // alert('Cobrador creado con exito');
         messageExit();
         console.log('creado ', result);
         resetForm();
       })
       .catch((error) => {
         messageFail();
-      //  alert('Los datos ingresados no son validos por favor revise');
+        //  alert('Los datos ingresados no son validos por favor revise');
         console.error('Error en el inicio de sesión: ', error);
       });
   };

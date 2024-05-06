@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Crea una instancia de Axios con una configuración base que incluye el token
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000', // Cambia esto según tu URL base
+  baseURL: `${PathApi}`, // Cambia esto según tu URL base
   headers: {
     'Content-Type': 'application/json'
     // Otros encabezados que puedas necesitar...
@@ -34,7 +34,7 @@ axiosInstance.interceptors.response.use(
       // Redirigir a otra ruta en el mismo dominio
       window.location.pathname = '/cobrowsing';
 
-    //   window.location.reload();
+      //   window.location.reload();
       // Por ejemplo, redireccionar a la página de inicio de sesión
       // o mostrar un mensaje al usuario.
     }
