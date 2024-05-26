@@ -1,20 +1,19 @@
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box, FormControl, FormHelperText, Grid, InputLabel, OutlinedInput, Typography } from '@mui/material';
+import { Box, FormControl, Grid, InputLabel, OutlinedInput, Typography } from '@mui/material';
 
-// third party 
+// third party
 import { Formik } from 'formik';
 
 // project imports
 
 // assets
 
-
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
 const DetailsCr = ({ row }) => {
   const theme = useTheme();
-  console.log("valor row:" + row)
+  console.log('valor row:' + row);
   return (
     <>
       <Grid container direction="column" justifyContent="center" spacing={2}>
@@ -28,125 +27,86 @@ const DetailsCr = ({ row }) => {
       <Formik
         initialValues={{
           id: row.id,
-          admin: row.admin_id,
-          name: row.collector_username,
-          document: row.borrowedValue,
-          address: row.safeValue,
-          occupation: row.rate,
-          total: row.creditDays,
-          submit: null
+          nameCollector: row.collector_username,
+          nameCliente: row.client_name,
+          borrowedValue: row.borrowedValue,
+          safeValue: row.safeValue,
+          rate: row.rate,
+          creditsDays: row.creditDays,
+          collAddres: row.collectionAddress,
+          initialCredit: row.creditInitDate,
+          finallyCredit: row.creditFinishDate,
+          pay: row.paymentInstallments,
+          stat: row.status,
+          creado: row.created_at
         }}
- 
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit}>
-            <FormControl fullWidth error={Boolean(touched.id && errors.id)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-register">Id</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-email-register"
-                type="text"
-                value={values.id}
-                name="name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                inputProps={{}}
-                readOnly
-              /> 
-            </FormControl>
-            <FormControl fullWidth error={Boolean(touched.name && errors.name)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-register">Administrador</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-email-register"
-                type="text"
-                value={values.name}
-                name="name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                inputProps={{}}
-              />
+        {({ values }) => (
+          <form>
+            <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel>Id Credito </InputLabel>
+              <OutlinedInput type="text" value={values.id} name="name" inputProps={{}} readOnly />
             </FormControl>
 
-            <FormControl fullWidth error={Boolean(touched.name && errors.name)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-register">Collector </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-email-register"
-                type="text"
-                value={values.name}
-                name="name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                inputProps={{}}
-              />
+            <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel>Nombre Usuario Collector </InputLabel>
+              <OutlinedInput type="text" value={values.nameCollector} name="name" inputProps={{}} readOnly />
             </FormControl>
 
-            <FormControl fullWidth error={Boolean(touched.document && errors.document)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-register">Cliente</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-email-register"
-                type="text"
-                value={values.document}
-                name="document"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                inputProps={{}}
-              />
+            <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel>Nombre Cliente </InputLabel>
+              <OutlinedInput type="text" value={values.nameCliente} name="name" inputProps={{}} readOnly />
             </FormControl>
 
-            <FormControl fullWidth error={Boolean(touched.document && errors.document)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-register">Valor credito</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-email-register"
-                type="text"
-                value={values.id}
-                name="document"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                inputProps={{}}
-              />
+            <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel>Monto Inicial </InputLabel>
+              <OutlinedInput type="text" value={values.borrowedValue} name="name" inputProps={{}} readOnly />
             </FormControl>
 
-            <FormControl fullWidth error={Boolean(touched.address && errors.address)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-register">Direccion</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-email-register"
-                type="text"
-                value={values.address}
-                name="address"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                inputProps={{}}
-                readOnly
-              />
-              {touched.address && errors.address && (
-                <FormHelperText error id="standard-weight-helper-text--register">
-                  {errors.address}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl fullWidth error={Boolean(touched.occupation && errors.occupation)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-register">Ocupacion</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-email-register"
-                type="text"
-                value={values.occupation}
-                name="occupation"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                inputProps={{}}
-              />
-              {touched.occupation && errors.occupation && (
-                <FormHelperText error id="standard-weight-helper-text--register">
-                  {errors.occupation}
-                </FormHelperText>
-              )}
+            <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel>Valor Seguro </InputLabel>
+              <OutlinedInput type="text" value={values.safeValue} name="name" inputProps={{}} readOnly />
             </FormControl>
 
-            {errors.submit && (
-              <Box sx={{ mt: 3 }}>
-                <FormHelperText error>{errors.submit}</FormHelperText>
-              </Box>
-            )}
+            <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel>Tasa de Credito </InputLabel>
+              <OutlinedInput type="text" value={values.rate} name="name" inputProps={{}} readOnly />
+            </FormControl>
 
+            <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel>Dias Credito </InputLabel>
+              <OutlinedInput type="text" value={values.creditsDays} name="name" inputProps={{}} readOnly />
+            </FormControl>
+
+            <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel>Direccion Cliente </InputLabel>
+              <OutlinedInput type="text" value={values.collAddres} name="name" inputProps={{}} readOnly />
+            </FormControl>
+
+            <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel>Fecha Inicio Credito  </InputLabel>
+              <OutlinedInput type="text" value={values.initialCredit} name="name" inputProps={{}} readOnly />
+            </FormControl>
+
+            <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel>Fecha Finalizacion Credito </InputLabel>
+              <OutlinedInput type="text" value={values.finallyCredit} name="name" inputProps={{}} readOnly />
+            </FormControl>
+
+            <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel>Cuotas Pagas</InputLabel>
+              <OutlinedInput type="text" value={values.pay} name="name" inputProps={{}} readOnly />
+            </FormControl>
+
+            <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel>Estado del Credito</InputLabel>
+              <OutlinedInput type="text" value={values.stat} name="name" inputProps={{}} readOnly />
+            </FormControl>
+
+            <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel>Fecha Creacion Credito </InputLabel>
+              <OutlinedInput type="text" value={values.creado} name="name" inputProps={{}} readOnly />
+            </FormControl>
           </form>
         )}
       </Formik>

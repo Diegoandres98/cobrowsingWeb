@@ -24,17 +24,10 @@ const pages = {
       children: [
         {
           id: 'Crear una ruta',
-          title: 'Cambiar clave a cobrador',
+          title: 'Crear Ruta Collector',
           type: 'item',
-          url: '/pages/login/login3',
-          target: true
-        },
-        {
-          id: 'Modificar una ruta',
-          title: 'Cambiar mi clave',
-          type: 'item',
-          url: '/pages/register/register3',
-          target: true
+          url: '/rutas/create',
+          target: false
         }
       ]
     },

@@ -21,6 +21,7 @@ const AuthRegister = Loadable(lazy(() => import('views/pages/authentication/auth
 const CreateClient = Loadable(lazy(() => import('views/pages/clients/clients/Create')));
 const ListCollector = Loadable(lazy(() => import('views/pages/collector/listCollector')));
 const ListClient = Loadable(lazy(() => import('views/pages/clients/listClient')));
+const CreateRuta = Loadable(lazy(()=> import('views/pages/rutas/createRuta')))
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -72,6 +73,23 @@ const MainRoutes = {
         {
           path: 'Gastos',
           element: <CreateClient />
+        },
+        {
+          path: 'credit',
+          element: <ListCredit />
+        },
+        {
+          path: 'abonos',
+          element: <ListCredit />
+        }
+      ]
+    },
+    {
+      path: 'rutas',
+      children: [
+        {
+          path: 'create',
+          element: <CreateRuta />
         },
         {
           path: 'credit',

@@ -9,6 +9,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { ActionIcon } from '../components/iconAction';
 import { StatusIcon } from '../components/status';
+import { DetailIcon } from './IconDetail';
 // eslint-disable-next-line react/prop-types
 export default function ColumnGroupingTable({ columns, rows, callback, itemForPage, controllerPagination }) {
   // const [rowsPage, setRowsPage] = React.useState(rows);
@@ -63,6 +64,13 @@ export default function ColumnGroupingTable({ columns, rows, callback, itemForPa
                       return (
                         <TableCell key={column.id} align={column.align}>
                           <ActionIcon row={row} callback={callback} />
+                        </TableCell>
+                      );
+                    }
+                    if (column.id === 'detailsIcon') {
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          <DetailIcon row={row} callback={callback} />
                         </TableCell>
                       );
                     }

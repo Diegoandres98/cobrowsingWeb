@@ -23,7 +23,7 @@ export const listCollector = async (page = 1, itemsForPage = 10) => {
     console.log('res ' + JSON.stringify(res));
     return res.data;
   } catch (e) {
-    console.log('errors ' + e);
+    console.log('errors...... ' + e.response?.data ,'--', e.message);
     throw 'Error de inicio de sesión: ' + (e.response?.data || e.message);
   }
 };
