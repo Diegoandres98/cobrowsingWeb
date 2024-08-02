@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { PathApi } from '../../src/config/config';
 
 // Crea una instancia de Axios con una configuración base que incluye el token
 const axiosInstance = axios.create({
